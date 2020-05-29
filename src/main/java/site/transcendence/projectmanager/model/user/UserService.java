@@ -9,4 +9,7 @@ public interface UserService {
     UserDto createUser(CreateUserRequest request);
     void deleteUser(Long userId);
 
+    UserEntity getUserEntity(Long userId);
+    UserEntity getUserEntity(String username);
+
 }

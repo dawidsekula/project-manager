@@ -13,7 +13,7 @@ import site.transcendence.projectmanager.model.user.UserService;
 import javax.validation.Valid;
 
 @Controller
-public class RegistrationController {
+public class RegisterController {
 
     @Autowired
     private UserService userService;
@@ -27,11 +27,8 @@ public class RegistrationController {
     @PostMapping("/register")
     public String userRegistration(@Valid @ModelAttribute("user") CreateUserRequest user, BindingResult result){
         if (result.hasErrors()){
-            System.out.println(result);
-            System.out.println("test");
             return "register";
         }
-
         userService.createUser(user);
         return "redirect:register?success";
     }

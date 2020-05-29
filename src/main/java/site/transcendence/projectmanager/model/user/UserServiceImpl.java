@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .build();
     }
 
-    private UserEntity getUserEntity(Long userId){
+    @Override
+    public UserEntity getUserEntity(Long userId){
         Optional<UserEntity> foundUser = userRepository.findById(userId);
         if (foundUser.isPresent()){
             return foundUser.get();
@@ -69,7 +70,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
-    private UserEntity getUserEntity(String username){
+    @Override
+    public UserEntity getUserEntity(String username){
         Optional<UserEntity> foundUser = userRepository.findByUsername(username);
         if (foundUser.isPresent()){
             return foundUser.get();

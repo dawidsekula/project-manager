@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <!-- Meta -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Title -->
+        <title>Projects</title>
+        <!-- Resources links -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+              crossorigin="anonymous">
+        <link href="../css/global.css" rel="stylesheet">
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+                integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+                crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header th:insert="common/navbar :: navbar"></header>
+        <header th:insert="common/navbar :: logoutModal"></header>
+
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${projects.isEmpty()}">
+                    <td colspan="2"> No Projects Available </td>
+                </tr>
+                <tr th:if="${projects.isEmpty()}">
+                    <td colspan="2"> No Projects Available </td>
+                </tr>
+                <tr th:each="project : ${projects}">
+                    <td><span th:text="${project.id}"></span></td>
+                    <td><span th:text="${project.owner.username}"></span></td>
+                    <td><span th:text="${project.description}"></span></td>
+                    <td><span th:text="${project.projectStatus}"></span></td>
+
+                    <td>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{id}(id=${project.id})}">Get</a>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{id}/edit(id=${project.id})}">Edit</a>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{id}/delete(id=${project.id})}">Delete</a>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </body>
+</html>

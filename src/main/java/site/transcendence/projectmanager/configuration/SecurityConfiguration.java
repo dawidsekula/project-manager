@@ -18,14 +18,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register", "/login").not().authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
+                .formLogin().loginPage("/login")
+                .and()
+                .logout()
+                .logoutUrl("/logout");
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/css/**", "/webjars/**");
+                .antMatchers("/css/**", "/bootstrap/**");
     }
 
     @Bean
