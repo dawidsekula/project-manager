@@ -1,6 +1,6 @@
 package site.transcendence.projectmanager.validation;
 
-import site.transcendence.projectmanager.model.request.CreateUserRequest;
+import site.transcendence.projectmanager.model.users.CreateUserRequest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

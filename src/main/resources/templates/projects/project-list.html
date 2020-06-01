@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <!-- Meta -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Resources links -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+              crossorigin="anonymous">
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+                integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+                crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/981976bb42.js" crossorigin="anonymous"></script>
+
+        <!-- Title -->
+        <title>Projects</title>
+        <!-- Styles -->
+        <link th:href="@{/css/global.css}" rel="stylesheet">
+    </head>
+
+    <body>
+        <header th:insert="common/navigation-header :: navbar"></header>
+        <header th:insert="common/navigation-header :: logoutModal"></header>
+
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">UUID</th>
+                    <th scope="col">Project tag</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${projects.isEmpty()} ">
+                    <td colspan="2"> No Projects Available </td>
+                </tr>
+
+                <tr th:each="project : ${projects}">
+                    <td><span th:text="${project.uuid}"></span></td>
+                    <td><span th:text="${project.projectTag}"></span></td>
+                    <td><span th:text="${project.name}"></span></td>
+                    <td><span th:text="${project.description}"></span></td>
+                    <td><span th:text="${project.projectStatus}"></span></td>
+
+                    <td>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/tasks(projectUuid=${project.uuid})}">Details</a>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/update(projectUuid=${project.uuid})}">Update</a>
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/delete(projectUuid=${project.uuid})}">Delete</a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </body>
+</html>

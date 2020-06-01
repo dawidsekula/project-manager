@@ -3,7 +3,7 @@ package site.transcendence.projectmanager.validation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import site.transcendence.projectmanager.model.user.UserRepository;
+import site.transcendence.projectmanager.model.users.UserRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

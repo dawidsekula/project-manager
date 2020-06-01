@@ -7,8 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import site.transcendence.projectmanager.model.request.CreateUserRequest;
-import site.transcendence.projectmanager.model.user.UserService;
+import site.transcendence.projectmanager.model.users.CreateUserRequest;
+import site.transcendence.projectmanager.model.users.UserService;
 
 import javax.validation.Valid;
 
@@ -21,16 +21,16 @@ public class RegisterController {
     @GetMapping("/register")
     public String userRegistration(Model model){
         model.addAttribute("user", new CreateUserRequest());
-        return "register";
+        return "main-register";
     }
 
     @PostMapping("/register")
     public String userRegistration(@Valid @ModelAttribute("user") CreateUserRequest user, BindingResult result){
         if (result.hasErrors()){
-            return "register";
+            return "main-register";
         }
         userService.createUser(user);
-        return "redirect:register?success";
+        return "redirect:/register?success";
     }
 
 }
