@@ -19,15 +19,15 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper mapper = TaskMapper.INSTANCE;
 
     @Override
-    public TaskDto createTask(TaskDto taskDto, String projectUuid) {
-        TaskEntity createdTask = mapper.toEntity(taskDto);
+    public TaskDto createTask(TaskDto newTask, String projectUuid) {
+        TaskEntity createdTask = mapper.toEntity(newTask);
         ProjectEntity relatedProject = projectService.getProjectEntity(projectUuid);
 
         createdTask.setProject(relatedProject);
         TaskEntity savedTask = taskRepository.saveAndFlush(createdTask);
 
-        String taskName = relatedProject.getProjectTag() + savedTask.getId();
-        savedTask.setName(taskName);
+        String taskCode = relatedProject.getProjectTag() + savedTask.getId();
+        savedTask.setCode(taskCode);
 
         savedTask = taskRepository.save(savedTask);
 
@@ -35,31 +35,31 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto getTask(String taskName) {
-        return mapper.toDto(getTaskEntity(taskName));
+    public TaskDto getTask(String taskCode) {
+        return mapper.toDto(getTaskEntity(taskCode));
     }
 
     @Override
-    public TaskDto updateTask(String taskName, TaskDto updated) {
-        TaskEntity foundTask = getTaskEntity(taskName);
-        updated.setId(null);
-        updated.setName(null);
+    public TaskDto updateTask(String taskCode, TaskDto updatedTask) {
+        TaskEntity foundTask = getTaskEntity(taskCode);
+        updatedTask.setId(null);
+        updatedTask.setCode(null);
 
-        mapper.copy(updated, foundTask);
+        mapper.copy(updatedTask, foundTask);
         taskRepository.save(foundTask);
 
         return mapper.toDto(foundTask);
     }
 
     @Override
-    public void deleteTask(String taskName) {
-        TaskEntity taskToDelete = getTaskEntity(taskName);
+    public void deleteTask(String taskCode) {
+        TaskEntity taskToDelete = getTaskEntity(taskCode);
         taskRepository.delete(taskToDelete);
     }
 
     @Override
-    public TaskEntity getTaskEntity(String taskName) {
-        Optional<TaskEntity> foundTask = taskRepository.findByName(taskName);
+    public TaskEntity getTaskEntity(String taskCode) {
+        Optional<TaskEntity> foundTask = taskRepository.findByCode(taskCode);
 
         if (foundTask.isPresent()) {
             return foundTask.get();
@@ -69,11 +69,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTasksName(String oldTag, String newTag) {
+    public void updateTasksCode(String oldTag, String newTag) {
         List<TaskEntity> tasks = taskRepository.findAllByProjectProjectTag(oldTag);
         tasks.forEach(taskEntity -> {
-            String updatedName = taskEntity.getName().replace(oldTag, newTag);
-            taskEntity.setName(updatedName);
+            String updatedCode = taskEntity.getCode().replace(oldTag, newTag);
+            taskEntity.setCode(updatedCode);
             taskRepository.save(taskEntity);
         });
     }

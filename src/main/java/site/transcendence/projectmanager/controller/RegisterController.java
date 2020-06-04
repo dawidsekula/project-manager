@@ -15,6 +15,7 @@ import javax.validation.Valid;
 @Controller
 public class RegisterController {
 
+    // TODO: Injection through constructor
     @Autowired
     private UserService userService;
 

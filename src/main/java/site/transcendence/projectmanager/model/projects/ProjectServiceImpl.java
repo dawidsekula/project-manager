@@ -29,11 +29,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDto createProject(ProjectDto createdDto, Principal principal) {
         UserEntity owner = userService.getUserEntity(principal.getName());
+        createdDto.setId(null);
+        createdDto.setUuid(null);
+        createdDto.setOwner(null);
+        createdDto.setUserId(null);
+        createdDto.setProjectTag(createdDto.getProjectTag().toUpperCase());
 
         ProjectEntity createdProject = mapper.toEntity(createdDto);
         createdProject.setOwner(owner);
         createdProject.setUuid(UUID.randomUUID().toString());
 
+        // TODO: Validation handling
         ProjectEntity savedProject = projectRepository.save(createdProject);
 
         return mapper.toDto(savedProject);
@@ -67,7 +73,7 @@ public class ProjectServiceImpl implements ProjectService {
         updatedDto.setId(null);
         updatedDto.setUuid(null);
 
-        if (!updatedProject.getProjectTag().equalsIgnoreCase(updatedDto.getProjectTag())){
+        if (!updatedProject.getProjectTag().equalsIgnoreCase(updatedDto.getProjectTag()) && updatedDto.getProjectTag() != null){
             updateProjectTag(updatedProject, updatedDto.getProjectTag());
         }
 
@@ -111,7 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void updateProjectTag(ProjectEntity project, String newTag) {
-        taskService.updateTasksName(project.getProjectTag(), newTag);
+        taskService.updateTasksCode(project.getProjectTag(), newTag);
         project.setProjectTag(newTag);
     }
 }

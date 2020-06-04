@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface TaskService {
 
-    TaskDto createTask(TaskDto taskDto, String projectUuid);
-    TaskDto getTask(String taskName);
-    TaskDto updateTask(String taskName, TaskDto updated);
-    void deleteTask(String taskName);
+    TaskDto createTask(TaskDto newTask, String projectUuid);
+    TaskDto getTask(String taskCode);
+    TaskDto updateTask(String taskCode, TaskDto updatedTask);
+    void deleteTask(String taskCode);
 
     List<TaskDto> getAllTasks(String projectUuid);
 
-    TaskEntity getTaskEntity(String taskName);
-    void updateTasksName(String oldTag, String newTag);
+    TaskEntity getTaskEntity(String taskCode);
+    void updateTasksCode(String oldTag, String newTag);
 
 }

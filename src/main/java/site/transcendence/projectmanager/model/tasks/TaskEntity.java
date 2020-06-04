@@ -16,12 +16,17 @@ public class TaskEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
+
+    private String code;
+
     private String name;
     private String description;
     private String category;
+
     @Enumerated(value = EnumType.STRING)
     private TaskStatus taskStatus;
 

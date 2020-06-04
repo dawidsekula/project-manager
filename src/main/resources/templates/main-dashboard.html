@@ -29,18 +29,9 @@
         <main role="main" class="container">
             <div class="starter-page">
                 <h1>Dashboard</h1>
-                <p class="lead">
-                    Main dashboard page
-                    <i class="fas fa-school"></i>
-
-                    Logged user: <span sec:authentication="name"></span>
-                    Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-
-                    Authenticated username:
-                <div sec:authentication="name"></div>
-                Authenticated user roles:
-                <div sec:authentication="principal.authorities"></div>
-
+                <p>
+                    <i class="fas fa-user"></i> Logged user: <span sec:authentication="name"></span><br>
+                    <i class="fas fa-user-shield"></i> Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
                 </p>
             </div>
         </main>

@@ -9,12 +9,14 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
               crossorigin="anonymous">
-        <!-- Scripts -->
+        <!-- Scripts Default -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
                 crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/981976bb42.js" crossorigin="anonymous"></script>
+        <!-- Scripts Custom -->
+        <script type="text/javascript" src="../js/projects.js" th:src="@{/js/projects.js}"></script>
 
         <!-- Title -->
         <title>Projects</title>
@@ -26,35 +28,227 @@
         <header th:insert="common/navigation-header :: navbar"></header>
         <header th:insert="common/navigation-header :: logoutModal"></header>
 
+        <!-- Create Project -->
+        <!-- Button of create Project modal-->
+        <button class="btn btn-secondary my-2 my-sm-0" type="button" style="margin: 20px" data-toggle="modal"
+                data-target="#createProjectModal">
+            New project
+        </button>
+
+        <!-- Modal of create Project -->
+        <div class="modal fade bd-example-modal-lg" id="createProjectModal" data-backdrop="static"
+             data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+            <form th:action="@{projects}" th:method="POST">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <!-- Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create new project</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- Body -->
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="projectTag" class="col-form-label">Project tag</label>
+                                <input type="text" class="form-control" id="projectTag" name="projectTag">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="projectName" class="col-form-label">Name</label>
+                                <input type="text" class="form-control" id="projectName" name="name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="projectDescription" class="col-form-label">Description</label>
+                                <input type="text" class="form-control" id="projectDescription" name="description">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="projectStatus" class="col-form-label">Status</label>
+                                <select id="projectStatus" class="form-control" name="projectStatus">
+                                    <option th:each="status : ${T(site.transcendence.projectmanager.model.projects.ProjectStatus).values()}"
+                                            th:value="${status}" th:text="${status}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table with Projects list -->
         <table class="table table-bordered table-dark">
             <thead>
                 <tr>
-                    <th scope="col">UUID</th>
+                    <th scope="col">No.</th>
                     <th scope="col">Project tag</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Actions</th>
+
+                    <th scope="col">JSON</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Tasks</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${projects.isEmpty()} ">
-                    <td colspan="2"> No Projects Available </td>
+                    <td colspan="2"> No Projects Available</td>
                 </tr>
 
                 <tr th:each="project : ${projects}">
-                    <td><span th:text="${project.uuid}"></span></td>
+                    <td><span th:text="${projects.indexOf(project)+1}"></span></td>
                     <td><span th:text="${project.projectTag}"></span></td>
                     <td><span th:text="${project.name}"></span></td>
-                    <td><span th:text="${project.description}"></span></td>
                     <td><span th:text="${project.projectStatus}"></span></td>
 
+                    <!-- Button to Project's JSON -->
                     <td>
-                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/tasks(projectUuid=${project.uuid})}">Details</a>
-                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/update(projectUuid=${project.uuid})}">Update</a>
-                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/projects/{projectUuid}/delete(projectUuid=${project.uuid})}">Delete</a>
+                        <!-- Button for Task's JSON -->
+                        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{projects/{projectUuid}(projectUuid=${project.uuid})}">
+                            <i class="fas fa-code"></i>
+                        </a>
                     </td>
 
+                    <!-- Update Project -->
+                    <td>
+                        <!-- Button to update Project modal -->
+                        <!-- Its behaviour is configured in 'projects.js' JS script file -->
+                        <a class="btn btn-secondary my-2 my-sm-0" id="buttonGetUpdateProjectModal"
+                           th:href="@{/projects/{projectUuid}(projectUuid=${project.uuid})}">
+                            <i class="fas fa-edit"></i></a>
+
+                        <!-- Modal of Project update -->
+                        <div class="modal fade bd-example-modal-lg" id="updateProjectModal" data-backdrop="static"
+                             data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true">
+                            <!-- Form for updating Project with pre-populated data by JS script (configured in projects.js) -->
+                            <!-- Form has an id parameter and 'th:action' parameter with current URL -->
+                            <!-- IMPORTANT! URL IS RELATIVE AND HAS NOT PROJECT'S 'UUID' INCLUDED -->
+                            <!-- PROJECT'S 'UUID' IS SET IN HIDDEN INPUT AT 'footer' SECTION OF THIS MODEL -->
+                            <form id="updateProjectForm" th:action="@{__${#httpServletRequest.requestURI}__}"
+                                  th:method="POST">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <!-- Header with close button -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Update project</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <!-- Body -->
+                                        <div class="modal-body">
+                                            <!-- Fields are pre-populated by JS script from 'projects.js' -->
+                                            <!-- Inputs' id corresponds with ids provided in JS script in 'projects.js' -->
+                                            <!-- Input's name has to match with Project's model class fields -->
+                                            <div class="form-group">
+                                                <label for="projectUuid" class="col-form-label">Project
+                                                    UUID</label>
+                                                <input class="form-control" id="projectUuid" type="text"
+                                                       name="uuid" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="projectTagUpdate" class="col-form-label">Project tag</label>
+                                                <input class="form-control-plaintext" id="projectTagUpdate" type="text"
+                                                       name="projectTag">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="projectNameUpdate" class="col-form-label">Name</label>
+                                                <input class="form-control-plaintext" id="projectNameUpdate" type="text"
+                                                       name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="projectDescriptionUpdate" class="col-form-label">Description</label>
+                                                <input class="form-control-plaintext" id="projectDescriptionUpdate" type="text"
+                                                       name="description">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="projectStatusUpdate" class="col-form-label">Status</label>
+                                                <select id="projectStatusUpdate" class="form-control" name="projectStatus">
+                                                    <option th:each="status : ${T(site.transcendence.projectmanager.model.projects.ProjectStatus).values()}"
+                                                            th:value="${status}" th:text="${status}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <!-- Hidden input with UUID of edited Project -->
+                                            <!-- UUID is pre-populated by JS script at 'projects.js' and used for setting final URL -->
+                                            <input type="hidden" id="projectUuidToUpdate">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <!-- Submit button's behaviour is configured in JS script at 'projects.js' -->
+                                            <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                                                Update
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </td>
+
+                    <!-- Button to Project's tasks -->
+                    <td>
+                        <a class="btn btn-secondary my-2 my-sm-0"
+                           th:href="@{/projects/{projectUuid}/tasks(projectUuid=${project.uuid})}"><i
+                                class="fas fa-tasks"></i></a>
+                    </td>
+
+                    <!-- Delete -->
+                    <td>
+                        <!-- Button to delete Project modal -->
+                        <a class="btn btn-secondary my-2 my-sm-0" id="buttonGetDeleteProjectModal"
+                           th:href="@{/projects/{projectUuid}(projectUuid=${project.uuid})}">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+
+                        <!-- Modal of Project delete -->
+                        <div class="modal fade" id="deleteProjectModal" data-backdrop="static" data-keyboard="false"
+                             tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <!-- Header with close button -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete project?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <!-- Footer -->
+                                    <!-- URL attribute with current URL which will be used to make a confirmation request -->
+                                    <div class="modal-footer" th:attr="url=@{__${#httpServletRequest.requestURI}__}">
+                                        <!-- Hidden input with Project's UUID -->
+                                        <!-- UUID is pre-populated by JS script at 'projects.js' and is used for setting final URL -->
+                                        <input type="hidden" id="projectUuidToDelete">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Cancel
+                                        </button>
+                                        <!-- Button's behaviour is configured in JS script at 'projects.js' -->
+                                        <button type="button" class="btn btn-primary my-2 my-sm-0"
+                                                id="buttonConfirmProjectDelete">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
                 </tr>
             </tbody>
         </table>
