@@ -97,8 +97,3 @@ Project Manager is an application for personal projects management made in Java.
 ## Authors
 
 * **Dawid Sekuła** - [GitHub](https://github.com/dawidsekula)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
