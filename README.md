@@ -1,8 +1,4 @@
-```
-TO DO: 
-```
-
-#Project Manager
+# Project Manager
 
 Project Manager is an application for personal projects management made in Java.  
 
