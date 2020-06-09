@@ -1,9 +1,5 @@
 
-```
-IMPORTANT
-
-Note that application is lack of front side validation, exception handling or even simple user updating functionality. It should be treated more like a tamplate for more complex projects than a fully functional application. My front-side knowledge is almost non-existant so any JS scripts or HTML views should be taken with a grain of salt. 
-```
+>Note that application is lack of front side validation, exception handling or even simple user updating functionality. It should be treated more like a tamplate for more complex projects than a fully functional application. My front-side knowledge is almost non-existant so any JS scripts or HTML views should be taken with a grain of salt. 
 
 # Project Manager
 
